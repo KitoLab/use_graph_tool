@@ -1,0 +1,18 @@
+import sys
+sys.path.append('/usr/local/Cellar/graph-tool/2.27_2/lib/python3.7/site-packages') 
+sys.path.append('/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages')
+#sys.path.append('/usr/local/Cellar/gtk+3/3.22.30') 
+sys.path.append('/usr/local/Cellar/pygobject3/3.30.3/lib/python3.7/site-packages') 
+from graph_tool.all import*
+
+
+g = Graph()
+
+v1 = g.add_vertex()
+v2 = g.add_vertex()
+
+e = g.add_edge(v1, v2)
+
+graph_draw(g, vertex_text=g.vertex_index, vertex_font_size=18,output_size=(200, 200), output="two-nodes.pdf")
+
+print(v1.out_degree())
