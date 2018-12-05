@@ -1,0 +1,16 @@
+import sys
+sys.path.append('/usr/local/Cellar/graph-tool/2.27_2/lib/python3.7/site-packages') 
+sys.path.append('/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages')
+sys.path.append('/usr/local/Cellar/pygobject3/3.30.3/lib/python3.7/site-packages') 
+import graph_tool.all as gt
+
+# ノード数 1000 の Barabási-Albert モデルのネットワークを作る
+g = gt.price_network(1000, directed=False)
+
+# グラフを描写するときのいい感じのノードの配置を計算する。
+# どうも斥力と引力が働く粒子の運動を計算して、釣り合いがとれるような場所を計算しているっぽい。
+# 試行毎に違う配置になる。
+p = gt.sfdp_layout(g)
+
+# グラフを PNG 画像として出力する。
+gt.graph_draw(g, pos=p, output="barabasi-albert.png")
