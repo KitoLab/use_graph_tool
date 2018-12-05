@@ -1,0 +1,23 @@
+import sys
+sys.path.append('/usr/local/Cellar/graph-tool/2.27_2/lib/python3.7/site-packages') 
+sys.path.append('/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages')
+sys.path.append('/usr/local/Cellar/pygobject3/3.30.3/lib/python3.7/site-packages') 
+import graph_tool.all as gt
+import numpy
+
+g = gt.price_network(1500)
+deg = g.degree_property_map("in")
+deg.a = 4 * (numpy.sqrt(deg.a) * 0.5 + 0.4)
+ebet = gt.betweenness(g)[1]
+ebet.a /= ebet.a.max() / 10.
+eorder = ebet.copy()
+eorder.a *= -1
+pos = gt.sfdp_layout(g)
+control = g.new_edge_property("vector<double>")
+for e in g.edges():
+  d = sqrt(sum((pos[e.source()].a - pos[e.target()].a) ** 2)) / 5
+  control[e] = [0.3, d, 0.7, d]
+
+
+gt.graph_draw(g, pos=pos, vertex_size=deg, vertex_fill_color=deg, vorder=deg,edge_color=ebet,
+eorder=eorder, edge_pen_width=ebet,edge_control_points=control,output="graph-draw.pdf")
